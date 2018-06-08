@@ -48,7 +48,14 @@ public class BinanceStreamingExchange extends BinanceExchange implements Streami
         BinanceStreamingService service = streamingService;
         streamingService = null;
         streamingMarketDataService = null;
-        return service.disconnect();
+        
+        Completable completable;
+        if (service != null) {
+            completable = service.disconnect();
+        } else {
+            completable = Completable.complete();
+        }
+        return completable;
     }
 
     @Override
